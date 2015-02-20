@@ -1,0 +1,21 @@
+<h1>Welcome to the 2015 National League Trade Simulator!</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h3>Please Select the Team you Wish to Control:</h3>
+<form action="/next">
+  <select name="player_team">
+  <% @teams.each { |x|  %>
+    <option value='<%= "#{x.id}" %>'><%= "#{x.name}" %></option><% } %>
+  </select>
+<h3>Now Select a Team to Trade With:<h3>
+  <select name="ai_team">
+  <% @teams.each { |x|  %>
+    <option value='<%= "#{x.id}" %>'><%= "#{x.name}" %></option><% } %>
+  </select>
+</form>
+<br>
+<br>
+<input type="submit">

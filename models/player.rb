@@ -1,4 +1,7 @@
 class Player
+  extend Seek
+  attr_accessor :team_id
+  attr_reader :first_name, :last_name, :position, :war, :id
   
   def initialize(options)
     @id         = options["id"]

@@ -1,0 +1,31 @@
+<h1>Select up to Three Players from each Team to Trade.</h1>
+<br>
+<br>
+<br>
+<br>
+<table style="width:100%">
+  <tr>
+    <td>
+      <h3><%= @player_name[0].name %></h3>
+      <form action="/trade_results">
+      <% counter = 0 %>
+      <% @player_roster.each { |x| %>
+        <input type="checkbox" name="player_id_<%= counter %>" value=<%= x.id%>>
+        <%= x.first_name + ' ' + x.last_name %><br>
+        <% counter += 1 %>
+        <% } %>
+    </td>
+    <td>  
+      <h3><%= @ai_name[0].name %></h3>
+      <% counter = 0  %>
+      <% @ai_roster.each { |x| %>
+        <input type="checkbox" name="ai_id_<%= counter %>" value=<%= x.id %>>
+        <%= x.first_name + ' ' + x.last_name %><br>
+        <% counter += 1 %>
+        <% } %>
+    </td>
+  </tr> 
+</table>
+<input type="hidden" name="player_team" value="<%= @player_name[0].id %>">
+<input type="hidden" name="ai_team" value="<%= @ai_name[0].id %>">
+<p align=center><input type="submit"><p></form>

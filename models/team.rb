@@ -1,8 +1,12 @@
 class Team
+  extend Seek
+  attr_reader :name, :general_manager, :id, :image
   
   def initialize(options)
+    @id              = options["id"]
     @name            = options["name"]
     @general_manager = options["general_manager"]
+    @image           = options["images"]
   end
   
 
