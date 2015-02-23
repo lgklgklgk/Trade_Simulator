@@ -45,7 +45,8 @@
 
 <% else %>  
 
-      <h3 align=center>That's almost a fair trade. If you include <%= @sample_player.first_name%>  <%= @sample_player.last_name %>, you've got a deal. Will you include <%= @sample_player.last_name %>? </h3>
+      <h3 align=center>That's not quite a fair trade. However If you include <%= @sample_player.first_name%>  <%= @sample_player.last_name %>, I'd reconsider.<h3> 
+      <h3 align=center>Will you include <%= @sample_player.last_name %>?</h3>
     
       <form>
         <p align=center><input type="radio" name="choice" value="yes">Yes
