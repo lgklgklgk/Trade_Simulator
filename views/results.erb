@@ -1,0 +1,17 @@
+
+<table border="1" style="width:100%">
+  <tr>
+    <th>Trade ID</th>
+    <th>Accepted?</th>
+    <th>Name</th>
+    <th>Source Team</th>
+    <th>Destination Team</th>
+  </tr>
+  <% @display.each {|x| %>
+  <tr>
+    <td><%= x[0] %></td>
+    <td><%= x[1] %></td>
+    <td><%= x[2] %></td>
+    <td><%= x[3] %></td>
+    <td><%= x[4] %></td>
+  </tr><% } %>

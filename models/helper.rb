@@ -49,19 +49,67 @@ module Convert
     end
   end
   
-  def verify_trade(team_id)
-    pitchers    = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'P'")
-    catchers    = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'Catcher'")
-    infielders  = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'IF'")
-    outfielders = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'OF'")
-    roster = pitchers + catchers + infielders + outfielders 
+  def initiate_trade
+    amended_player = []
+    amended_ai     = []
+    a = Player.seek("team_id", @player_team[0].id)
+    b = Player.seek("team_id", @ai_team[0].id)
+    a.each {|a| amended_player << a.id }
+    b.each {|b| amended_ai     << b.id }
+    players_to_remove = []
+    ai_to_remove      = []
+    @player_objects[0].each {|object| players_to_remove << object.id }
+    @player_objects[1].each {|object| ai_to_remove      << object.id }
+    final_player_array = amended_player - players_to_remove
+    final_ai_array     = amended_ai     - ai_to_remove
+    final_player_object_array = []
+    final_ai_object_array     = []
+    final_player_array.each {|id| final_player_object_array << Player.seek("id", id)}
+    final_ai_array.each     {|id| final_ai_object_array     << Player.seek("id", id)}
+    final_player_object_array << @player_objects[1]
+    final_ai_object_array     << @player_objects[0]
+    final_player_object_array.flatten!
+    final_ai_object_array.flatten!
+    if final_player_object_array.length <= 44 && final_ai_object_array.length <= 44
+      evaluate_pitchers(final_player_object_array, final_ai_object_array)
+    else
+      return "Invalid trade, this would give one team too many players!"
+    end
   end
   
-  def evaluate_trade(war_diff, team_id)
+  def evaluate_pitchers(player, ai)
+    if player.select {|x| x.position == "Pitcher"}.length >= 10 && ai.select {|x| x.position == "Pitcher"}.length >= 10
+      evaluate_catchers(player, ai)
+    else
+      return "Invalid trade, one team wouldn't have enough pitchers!"
+    end
+  end
+  
+  def evaluate_catchers(player, ai)
+    if player.select {|x| x.position == "Catcher"}.length >= 2 && ai.select {|x| x.position == "Catcher"}.length >= 2
+      evaluate_infield(player, ai)
+    else
+      return "Invalid trade, one team wouldn't have enough catchers!"
+    end
+  end
+  
+  def evaluate_infield(player, ai)
+    if player.select {|x| x.position == "IF"}.length >= 6 && ai.select {|x| x.position == "IF"}.length >= 6
+      evaluate_outfield(player, ai)
+    else
+      return "Invalid trade one team wouldn't have enough infielders!"
+    end
+  end
+     
+  def evaluate_outfield(player, ai)
+    if player.select {|x| x.position == "OF"}.length >= 4 && ai.select {|x| x.position == "OF"}.length >= 4
+      evaluate_trade(@war_diff)
+    else
+      return "Invalid trade, one team wouldn't have enough outfielders!"
+    end
+  end
+  
+  def evaluate_trade(war_diff)
     if war_diff >= 5
       accept_trade
       return "This is an excellent offer. I will happily accept!"
@@ -72,31 +120,54 @@ module Convert
       accept_trade
       return "Hmm, this seems like a very fair offer. I begrudingly accept."
     else
-      counter_offer(war_diff, team_id)
+      counter_offer(war_diff)
     end
   end
   
   def accept_trade
     DATABASE.execute("INSERT INTO trades (accepted) VALUES ('yes')") 
+    trade_id = DATABASE.execute("SELECT id FROM trades WHERE id = (SELECT MAX(id) FROM trades)")
     @player_objects[0].each do |x|
-      binding.pry
-      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, #{x.team_id}, #{@ai_team[0].id}, last_insert_rowid(trades))") 
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{@player_team[0].name}', '#{@ai_team[0].name}', #{trade_id[0]['id']})") 
     end
+    @player_objects[1].each do |x|
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{@ai_team[0].name}', '#{@player_team[0].name}', #{trade_id[0]['id']})") 
+    end
+    return
   end 
   
-  def counter_offer(war_diff, team_id)
-    counter_offer = DATABASE.execute("SELECT * FROM players WHERE team_id = 
-    #{team_id} AND war >= #{war_diff.abs}")
-    if counter_offer == [] 
-      reject_trade  
-      return "That is an absolutely ridiculous offer, and frankly, you should be ashamed of yourself. No one on your roster will make this work."
-    else counter_player = Player.new(counter_offer.sample) 
-      binding.pry   
-      return decide_counter_offer(counter_player) 
+  def reject_trade
+    DATABASE.execute("INSERT INTO trades (accepted) VALUES ('no')") 
+    trade_id = DATABASE.execute("SELECT id FROM trades WHERE id = (SELECT MAX(id) FROM trades)")
+    @player_objects[0].each do |x|
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{@player_team[0].name}', '#{@ai_team[0].name}', #{trade_id[0]['id']})") 
+    end
+    @player_objects[1].each do |x|
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{@ai_team[0].name}', '#{@player_team[0].name}', #{trade_id[0]['id']})") 
+    end
+    return
+  end 
+  
+  def counter_check
+    if params["choice"] == "no"
+      @player_objects[0].pop
+      reject_trade
+      redirect to("/counter")
     end
   end
   
-  def decide_counter_offer(player_object)
+  def display_join
+    DATABASE.execute("SELECT transactions.trade_id, trades.accepted, players.last_name, transactions.source, transactions.destination FROM transactions JOIN trades ON transactions.trade_id = trades.id JOIN players ON transactions.player = players.id JOIN teams ON transactions.source = teams.name")
   end
+  private
   
+  def counter_offer(war_diff)
+    a = Player.seek("team_id", @player_team[0].id)
+    b = params.values.map {|x| x.to_i}
+    b.each {|b| a.delete_if{|a| (a.id) == b}}
+    @sample_players = a.select {|x| x.war >= war_diff.abs}
+    @sample_player  = @sample_players.sample
+    return
+  end
+    
 end

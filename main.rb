@@ -15,8 +15,8 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS teams
 DATABASE.execute("CREATE TABLE IF NOT EXISTS trades
                  (id INTEGER PRIMARY KEY, accepted TEXT)")
 DATABASE.execute("CREATE TABLE IF NOT EXISTS transactions
-                 (id INTEGER PRIMARY KEY, player INTEGER, source INTEGER, 
-                 destination INTEGER, trade_id INTEGER)")
+                 (id INTEGER PRIMARY KEY, player INTEGER, source TEXT, 
+                 destination TEXT, trade_id INTEGER)")
                  
                  
 require_relative "models/helper.rb"
@@ -47,10 +47,16 @@ get "/trade_results" do
   @war_diff       = war_difference(@player_objects)
   @your_players   = word_connector(get_player_names(@player_objects[0])) 
   @ai_players     = word_connector(get_player_names(@player_objects[1]))
-  @ai_response    = evaluate_trade(@war_diff, @player_team[0].id)
-  binding.pry
+  counter_check
+  @initiate_trade = initiate_trade
   erb :trade_results
 end                
-                 
-                 
-              
+
+get "/counter" do
+  erb :counter
+end
+
+get "/results" do
+  @display = display_join
+  erb :results
+end

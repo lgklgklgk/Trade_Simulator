@@ -1,2 +1,78 @@
+<h4 align=center>You have offered <%= @your_players %> in exchange for <%= @ai_players %></h4>
+<br>
+<br>
 <h1 align=center><%= @ai_team[0].general_manager %> is mulling your offer!</h1>
 <p align=center><img src=<%= @ai_team[0].image %> height="350" width="500"></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h3 align=center><%= @initiate_trade %></h3>
+
+<% if @sample_players == [] %>
+    <%= reject_trade %>  
+      <h3 align=center>That is an absolutely ridiculous offer, and frankly, you should be ashamed of yourself. No one on your roster will make this work.</h3>
+      <br>
+      <br>
+      <br>
+      <br>
+      <h3 align=center>Thank you for using the National League Trade Simulator.       Your results have been saved. Would you like to view the past trades            now?</h3>
+
+      <form action="/results">
+        <p align=center><input type="radio" name="choice" value="yes"                     checked>Yes
+          <br>
+          <input type="radio" name="choice" value="no">No</p>
+        <p align=center><input type="submit"></form></p>
+
+<% elsif @sample_players == nil %>
+<br>
+<br>
+<br>
+<br>
+  <h3 align=center>Thank you for using the National League Trade Simulator.       Your results have been saved. Would you like to view the past trades now?</h3>
+
+  <form action="/results">
+    <p align=center><input type="radio" name="choice" value="yes" checked>Yes
+      <br>
+      <input type="radio" name="choice" value="no">No</p>
+    <p align=center><input type="submit"></form></p>
+
+<% else %>  
+
+      <h3 align=center>That's almost a fair trade. If you include <%= @sample_player.first_name%>  <%= @sample_player.last_name %>, you've got a deal. Will you include <%= @sample_player.last_name %>? </h3>
+    
+      <form>
+        <p align=center><input type="radio" name="choice" value="yes">Yes
+          <br>
+          <input type="radio" name="choice" value="no">No</p>
+          <input type="hidden" name="player_team" value="<%= @player_team[0].id %>">
+          <input type="hidden" name="ai_team" value="<%= @ai_team[0].id %>">
+          <% params.each {|x,y| %>
+          <input type="hidden" name="<%= x %>" value="<%= y %>"><% } %>
+          <input type="hidden" name="player_id" value="<%= @sample_player.id %>"> 
+          
+          <p align=center><input type="submit"></form></p>
+          
+         
+        
+
+<% end %>
+
+ 
+
+
+
+          
+          
+          
+          
+          
+          
+          
+          
+          
