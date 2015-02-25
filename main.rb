@@ -24,6 +24,11 @@ require_relative "models/class_modules.rb"
 require_relative "models/player.rb"
 require_relative "models/team.rb"
 require_relative "models/trade.rb"
+require_relative "controllers/counter_reject.rb"
+require_relative "controllers/display_table.rb"
+require_relative "controllers/home_page.rb"
+require_relative "controllers/make_trade.rb"
+require_relative "controllers/select_players.rb"
 
 helpers Convert
 
@@ -41,14 +46,15 @@ get "/next" do
 end
 
 get "/trade_results" do
-  @player_team    = Team.seek("id", params["player_team"])
-  @ai_team        = Team.seek("id", params["ai_team"])
-  @player_objects = trade_conversion(params)
-  @war_diff       = war_difference(@player_objects)
-  @your_players   = word_connector(get_player_names(@player_objects[0])) 
-  @ai_players     = word_connector(get_player_names(@player_objects[1]))
-  counter_check
-  @initiate_trade = initiate_trade
+  teams = {}
+  teams["player_team"] = params.delete("player_team")
+  teams["ai_team"] = params.delete("ai_team")
+  @trade = Trade.new({"player_team" => teams["player_team"], "ai_team" => teams["ai_team"], 
+    "all_the_player_ids" => params.values.map(&:to_i)})
+  counter_check  
+  @ai_team      = Team.seek("id", teams["ai_team"])
+  @your_players = word_connector(get_player_names(@trade.player_dealt_players)) 
+  @ai_players   = word_connector(get_player_names(@trade.ai_dealt_players))
   erb :trade_results
 end                
 
@@ -58,5 +64,6 @@ end
 
 get "/results" do
   @display = display_join
+  do_not_want_table
   erb :results
 end

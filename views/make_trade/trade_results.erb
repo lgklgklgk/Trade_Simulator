@@ -13,9 +13,9 @@
 <br>
 <br>
 <br>
-<h3 align=center><%= @initiate_trade %></h3>
+<h3 align=center><%= @trade.team_has_too_many_players %></h3>
 
-<% if @sample_players == [] %>
+<% if @trade.sample_players == [] %>
     <%= reject_trade %>  
       <h3 align=center>That is an absolutely ridiculous offer, and frankly, you should be ashamed of yourself. No one on your roster will make this work.</h3>
       <br>
@@ -30,7 +30,7 @@
           <input type="radio" name="choice" value="no">No</p>
         <p align=center><input type="submit"></form></p>
 
-<% elsif @sample_players == nil %>
+<% elsif @trade.sample_players == nil %>
 <br>
 <br>
 <br>
@@ -44,18 +44,19 @@
     <p align=center><input type="submit"></form></p>
 
 <% else %>  
-
-      <h3 align=center>That's almost a fair trade. If you include <%= @sample_player.first_name%>  <%= @sample_player.last_name %>, you've got a deal. Will you include <%= @sample_player.last_name %>? </h3>
+<% sample_player = @trade.sample_players.sample %>
+      <h3 align=center>That's not quite a fair trade. However If you include <%= sample_player.first_name%>  <%= sample_player.last_name %>, I'd reconsider.<h3> 
+      <h3 align=center>Will you include <%= sample_player.last_name %>?</h3>
     
       <form>
         <p align=center><input type="radio" name="choice" value="yes">Yes
           <br>
           <input type="radio" name="choice" value="no">No</p>
-          <input type="hidden" name="player_team" value="<%= @player_team[0].id %>">
-          <input type="hidden" name="ai_team" value="<%= @ai_team[0].id %>">
+          <input type="hidden" name="player_team" value="<%= @trade.player_team %>">
+          <input type="hidden" name="ai_team" value="<%= @trade.ai_team %>">
           <% params.each {|x,y| %>
           <input type="hidden" name="<%= x %>" value="<%= y %>"><% } %>
-          <input type="hidden" name="player_id" value="<%= @sample_player.id %>"> 
+          <input type="hidden" name="player_id" value="<%= sample_player.id %>"> 
           
           <p align=center><input type="submit"></form></p>
           
