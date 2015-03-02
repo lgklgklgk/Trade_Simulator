@@ -1,10 +1,117 @@
+
 body {
+  text-align: center;
   background-color: #E5FCC2;
   font-family: 'Montserrat', sans-serif;;
   color: #594F4F;
 }
 
 form {
+  text-align: center;
   background-color: #9DE0AD;
   color: #594F4F;
+}
+
+td {
+  vertical-align: top;
+  text-align: left;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  color: #E5FCC2;
+  background-color: #594F4F;
+}
+
+li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  width: 300px;
+}
+
+.id {
+  float: left;
+  color: #594F4F;
+  padding-top: 5px;
+}
+
+.id_border li {
+  border: 1px solid black;
+}
+
+.accepted {
+  color: #594F4F;
+  float: left;
+  padding-top: 5px;
+}
+
+.accepted_border li {
+  border: 1px solid black;
+  background-color: #547980;
+}
+
+.name {
+  color: #594F4F;
+  float: left;
+  padding-top: 5px;
+}
+
+.name_border li{
+  border: 1px solid black;
+  background-color: #45ADA8;
+}
+
+.source {
+  color: #594F4F;
+  float: left;
+  padding-top: 5px;
+}
+
+.source_border li {
+  border: 1px solid black;
+  background-color: #547980;
+}
+
+.destination{
+  color: #594F4F;
+  float: left;
+  padding-top: 5px;
+}
+
+.destination_border li {
+  border: 1px solid black;
+}
+
+.homepage_link{
+  position: relative;
+  bottom: 0;
+}
+
+.player_form {
+  text-align: left;
+}
+
+.image-wrapper {
+position: relative;
+}
+
+.scale-image {
+display: block;
+width: auto;
+max-width: 100%;
+margin-left: auto;
+margin-right: auto;
+max-height: 350px;
+}
+
+body.table {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;  
 }

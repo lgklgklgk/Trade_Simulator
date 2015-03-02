@@ -1,17 +1,5 @@
 module Seek
   
-  
-  def verify_trade(team_id)
-    pitchers    = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'P'")
-    catchers    = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'Catcher'")
-    infielders  = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'IF'")
-    outfielders = DATABASE.execute("SELECT count(*) FROM players WHERE team_id = 
-     #{team_id} AND position = 'OF'")
-  end
-  
   def seek_all
     b = []
     table_name = class_to_table
@@ -77,7 +65,6 @@ module Seek
   def pull(table_name,column_name,value)
     value = "'" + value + "'" if value.is_a?(String)
     sql_string = "SELECT * FROM #{table_name} WHERE #{column_name} = #{value}"
-    
     DATABASE.execute(sql_string)
   end
 

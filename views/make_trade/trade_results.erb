@@ -2,8 +2,13 @@
 <h4 align=center>You have offered <%= @your_players %> in exchange for <%= @ai_players %></h4>
 <br>
 <br>
-<h1 align=center><%= @ai_team[0].general_manager %> is mulling your offer!</h1>
-<p align=center><img src=<%= @ai_team[0].image %> height="350" width="500"></p>
+<h1 align=center>
+  <%= @ai_team[0].general_manager %> is mulling your offer!</h1>
+  <p align=center>
+    <div class="image-wrapper">
+    <img src=<%= @ai_team[0].image %> class="scale-image" />
+    </div>
+  </p>
 <br>
 <br>
 <br>
@@ -16,7 +21,7 @@
 <h3 align=center><%= @trade.team_has_too_many_players %></h3>
 
 <% if @trade.sample_players == [] %>
-    <%= reject_trade %>  
+    <%= @trade.reject %>  
       <h3 align=center>That is an absolutely ridiculous offer, and frankly, you should be ashamed of yourself. No one on your roster will make this work.</h3>
       <br>
       <br>

@@ -24,11 +24,11 @@ require_relative "models/class_modules.rb"
 require_relative "models/player.rb"
 require_relative "models/team.rb"
 require_relative "models/trade.rb"
-require_relative "controllers/counter_reject.rb"
-require_relative "controllers/display_table.rb"
-require_relative "controllers/home_page.rb"
-require_relative "controllers/make_trade.rb"
-require_relative "controllers/select_players.rb"
+require_relative "controllers/counter_reject"
+require_relative "controllers/display_table"
+require_relative "controllers/home_page"
+require_relative "controllers/make_trade"
+require_relative "controllers/select_players"
 
 helpers Convert
 

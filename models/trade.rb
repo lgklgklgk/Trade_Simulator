@@ -88,10 +88,10 @@ class Trade
     player_team = Team.seek("id", @player_team)
     ai_team     = Team.seek("id", @ai_team)
     @player_dealt_players.each do |x|
-      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{player_team[0].name}', '#{ai_team[0].name}', #{trade_id[0]['id']})") 
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{player_team[0].abbreviation}', '#{ai_team[0].abbreviation}', #{trade_id[0]['id']})") 
     end
     @ai_dealt_players.each do |x|
-      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{ai_team[0].name}', '#{player_team[0].name}', #{trade_id[0]['id']})") 
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{ai_team[0].abbreviation}', '#{player_team[0].abbreviation}', #{trade_id[0]['id']})") 
     end
     
   end
@@ -102,10 +102,10 @@ class Trade
     player_team = Team.seek("id", @player_team)
     ai_team     = Team.seek("id", @ai_team)
     @player_dealt_players.each do |x|
-      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{player_team[0].name}', '#{ai_team[0].name}', #{trade_id[0]['id']})") 
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{player_team[0].abbreviation}', '#{ai_team[0].abbreviation}', #{trade_id[0]['id']})") 
     end
     @ai_dealt_players.each do |x|
-      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{ai_team[0].name}', '#{player_team[0].name}', #{trade_id[0]['id']})") 
+      DATABASE.execute("INSERT INTO transactions (player, source, destination, trade_id) VALUES (#{x.id}, '#{ai_team[0].abbreviation}', '#{player_team[0].abbreviation}', #{trade_id[0]['id']})") 
     end
     return
   end
@@ -122,16 +122,6 @@ class Trade
       return "That offer is okay. We begrudgingly accept."
     else
       modify_dealt_players_for_counter_offer
-    end
-  end
-  
-  def gm_response
-    if @war_diff >= 3
-      return "Wow! This is an excellent offer! I happily accept!"
-    elsif @war_diff < 3 && @war_diff >= 1
-      return "This is a fair offer. I accept."
-    else
-      return "This offer is agreeable to our franchise. I begrudgingly accept"
     end
   end
   

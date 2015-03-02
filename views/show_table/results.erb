@@ -1,16 +1,53 @@
-<table border="1" style="width:100%">
-  <tr>
-    <th>Trade ID</th>
-    <th>Accepted?</th>
-    <th>Name</th>
-    <th>Source Team</th>
-    <th>Destination Team</th>
-  </tr>
-  <% @display.each {|x| %>
-  <tr>
-    <td><%= x[0] %></td>
-    <td><%= x[1] %></td>
-    <td><%= x[2] %></td>
-    <td><%= x[3] %></td>
-    <td><%= x[4] %></td>
-  </tr><% } %>
+<body class="table">
+<ul>
+  <div class="id">
+  <li>ID</li>
+    <ul>
+      <div class="id_border">
+      <% @display.each {|x| %>
+      <li><%= x[0] %></li><% } %>
+      </div>
+    </ul>
+  </div>
+  <div class="accepted">  
+  <li style="position: relative; left: 5px">Accept?</li>
+    <ul>
+      <div class="accepted_border">
+      <% @display.each {|x| %>
+      <li><%= x[1] %></li><% } %>
+      </div>
+    </ul>
+  </div>
+  <div class="name">
+  <li>Name</li>
+    <ul>
+      <div class="name_border">
+      <% @display.each {|x| %>
+      <li><%= x[2] %></li><% } %>
+      </div>
+    </ul>
+  </div>
+  <div class ="source">
+  <li style="position: relative; left: -5px">Source</li>
+    <ul>
+      <div class="source_border">
+      <% @display.each {|x| %>
+      <li><%= x[3] %></li><% } %>
+      </div>
+    </ul>
+  </div>
+  <div class ="destination">  
+  <li>Destination</li>
+    <ul>
+      <div class = "destination_border">
+      <% @display.each {|x| %>
+      <li><%= x[4] %></li><% } %>
+      </div>
+    </ul>
+  </div>
+</ul>
+</body>
+<br>
+<br>
+<br>
+<br>

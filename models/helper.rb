@@ -29,7 +29,7 @@ module Convert
   end
   
   def display_join
-    DATABASE.execute("SELECT transactions.trade_id, trades.accepted, players.last_name, transactions.source, transactions.destination FROM transactions JOIN trades ON transactions.trade_id = trades.id JOIN players ON transactions.player = players.id JOIN teams ON transactions.source = teams.name")
+    DATABASE.execute("SELECT transactions.trade_id, trades.accepted, players.last_name, transactions.source, transactions.destination FROM transactions JOIN trades ON transactions.trade_id = trades.id JOIN players ON transactions.player = players.id JOIN teams ON transactions.source = teams.abbreviation")
   end
   
   def do_not_want_table

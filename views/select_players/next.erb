@@ -7,14 +7,17 @@
 <table style="width:100%">
   <tr>
     <td>
+     
       <h3><%= @player_name[0].name %></h3>
       <form action="/trade_results">
-      <% counter = 0 %>
-      <% @player_roster.each { |x| %>
-        <input type="checkbox" name="player_id_<%= counter %>" value=<%= x.id%>>
-        <%= x.first_name + ' ' + x.last_name %><br>
-        <% counter += 1 %>
+        <div class="player_form">   
+        <% counter = 0 %>
+        <% @player_roster.each { |x| %>
+          <input type="checkbox" name="player_id_<%= counter %>" value=<%= x.id%>>
+          <%= x.first_name + ' ' + x.last_name %><br>
+          <% counter += 1 %>
         <% } %>
+        </div>
     </td>
     <td>  
       <h3><%= @ai_name[0].name %></h3>
